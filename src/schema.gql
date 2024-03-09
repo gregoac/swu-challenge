@@ -1,0 +1,114 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input BoardingOrDisembarkingCharacterInput {
+  characterName: String!
+  name: String!
+}
+
+type Character {
+  currentLocation: Planet
+  name: String!
+  sensitivityToTheForce: String!
+  species: String!
+  starship: Starship
+}
+
+type Coordinates {
+  latitude: Int!
+  longitude: Int!
+}
+
+input CoordinatesInput {
+  latitude: Int!
+  longitude: Int!
+}
+
+input CreateCharacterInput {
+  name: String!
+  sensitivityToTheForce: String!
+  species: String!
+}
+
+input CreatePlanetInput {
+  climate: String!
+  coordinates: CoordinatesInput!
+  name: String!
+  population: Int!
+  terrain: String!
+}
+
+input CreateStarshipInput {
+  cargoCapacity: Int!
+  currentLocation: CoordinatesInput!
+  model: String!
+  name: String!
+}
+
+type Mutation {
+  boardingCharacter(boardingCharacterInput: BoardingOrDisembarkingCharacterInput!): Starship!
+  createCharacter(createCharacterInput: CreateCharacterInput!): Character!
+  createPlanet(createPlanetInput: CreatePlanetInput!): Planet!
+  createStarship(createStarshipInput: CreateStarshipInput!): Starship!
+  disembarkingCharacter(disembarkingCharacterInput: BoardingOrDisembarkingCharacterInput!): Starship!
+  relocateCharacter(relocateCharacterInput: RelocateCharacterInput!): Character!
+  removeCharacter(name: String!): Character!
+  removePlanet(name: String!): Planet!
+  removeStarship(name: String!): Starship!
+  updateCharacter(updateCharacterInput: UpdateCharacterInput!): Character!
+  updatePlanet(updatePlanetInput: UpdatePlanetInput!): Planet!
+  updateStarship(updateStarshipInput: UpdateStarshipInput!): Starship!
+}
+
+type Planet {
+  climate: String!
+  coordinates: Coordinates!
+  name: String!
+  population: Int!
+  terrain: String!
+}
+
+type Query {
+  character(name: String!): Character!
+  characters: [Character!]!
+  planet(name: String!): Planet!
+  planets: [Planet!]!
+  starship(name: String!): Starship!
+  starships: [Starship!]!
+}
+
+input RelocateCharacterInput {
+  name: String!
+  targePlanet: String!
+}
+
+type Starship {
+  cargoCapacity: Int!
+  currentLocation: Coordinates!
+  enemies: [Starship!]
+  model: String!
+  name: String!
+  passengers: [Character!]
+}
+
+input UpdateCharacterInput {
+  name: String!
+  sensitivityToTheForce: String
+  species: String
+}
+
+input UpdatePlanetInput {
+  climate: String
+  coordinates: CoordinatesInput
+  name: String!
+  population: Int
+  terrain: String
+}
+
+input UpdateStarshipInput {
+  cargoCapacity: Int
+  currentLocation: CoordinatesInput
+  model: String
+  name: String!
+}
