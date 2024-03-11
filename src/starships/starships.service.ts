@@ -138,7 +138,14 @@ export class StarshipsService {
   }
 
   async declareEnemy(name: string, enemyName: string){
-    const starship = await this.findOne(name);
+    const starship = await this.starshipRepository.findOne({
+      where: {
+        name
+      },
+      relations: {
+        enemies: true
+      }
+    });
     const enemyStarship = await this.starshipRepository.findOne({
       where: {
         name: enemyName
