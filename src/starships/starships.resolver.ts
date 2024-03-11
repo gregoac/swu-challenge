@@ -5,6 +5,7 @@ import { CreateStarshipInput } from './dto/create-starship.input';
 import { UpdateStarshipInput } from './dto/update-starship.input';
 import { StarshipAndPlanetInput } from './dto/travel-to-planet.input';
 import { BoardingOrDisembarkingCharacterInput } from './dto/boarding-disembarking-character.input';
+import { DeclareEnemyInput } from './dto/declare-enemy.input';
 
 @Resolver(_ => Starship)
 export class StarshipsResolver {
@@ -75,4 +76,9 @@ export class StarshipsResolver {
       return e
     }
   }
+
+  @Mutation(_ => Starship)
+  declareEnemy(@Args("declareEnemyInput") declareEnemyInput: DeclareEnemyInput){
+    return this.starshipsService.declareEnemy(declareEnemyInput.name, declareEnemyInput.enemyName);
+  } 
 }

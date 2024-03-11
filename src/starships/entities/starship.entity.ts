@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Column, Entity, Point, ManyToMany, OneToMany, Geography, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Point, ManyToMany, OneToMany, JoinTable, PrimaryColumn } from 'typeorm';
 import { Character } from 'src/characters/entities/character.entity';
 import { PointType } from 'src/types';
 
@@ -27,12 +27,13 @@ export class Starship {
   @Field(_ => PointType)
   currentLocation: Point;
 
-  @OneToMany(_ => Character, character => character.starship, {nullable: true, eager: true})
+  @OneToMany(_ => Character, character => character.starship, {nullable: true})
   @Field(_ => [Character], {nullable: true})
   passengers?: Character[];
 
-  @ManyToMany(() => Starship, starship => starship.enemies, {nullable: true})
+  @ManyToMany(() => Starship, {nullable: true, cascade: true})
+  @JoinTable()
   @Field(_ => [Starship], {nullable: true})
-  enemies?: Starship[]; 
+  enemies?: Starship[]
 
 }

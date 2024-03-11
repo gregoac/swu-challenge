@@ -36,11 +36,17 @@ input CreateStarshipInput {
   name: String!
 }
 
+input DeclareEnemyInput {
+  enemyName: String!
+  name: String!
+}
+
 type Mutation {
   boardingCharacter(boardingCharacterInput: BoardingOrDisembarkingCharacterInput!): Starship!
   createCharacter(createCharacterInput: CreateCharacterInput!): Character!
   createPlanet(createPlanetInput: CreatePlanetInput!): Planet!
   createStarship(createStarshipInput: CreateStarshipInput!): Starship!
+  declareEnemy(declareEnemyInput: DeclareEnemyInput!): Starship!
   disembarkingCharacter(disembarkingCharacterInput: BoardingOrDisembarkingCharacterInput!): Starship!
   relocateCharacter(relocateCharacterInput: RelocateCharacterInput!): Character!
   removeCharacter(name: String!): Character!

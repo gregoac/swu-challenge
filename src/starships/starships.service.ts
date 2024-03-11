@@ -6,7 +6,7 @@ import { Starship } from './entities/starship.entity';
 import { Point, Repository } from 'typeorm';
 import { CharactersService } from 'src/characters/characters.service';
 import { PlanetsService } from 'src/planets/planets.service';
-import { PointType, PointTypeInput } from 'src/types';
+import { isConvertibleToNumber, findObjectByProperty, getRandomLongitudeAndLatitude } from 'src/utils';
 
 @Injectable()
 export class StarshipsService {
@@ -24,13 +24,22 @@ export class StarshipsService {
   }
 
   async findAll(): Promise<Starship[]> {
-    return this.starshipRepository.find();
+    return this.starshipRepository.find({
+      relations: {
+        passengers: true,
+        enemies: true
+      }
+    });
   }
 
   async findOne(name: string): Promise<Starship> {
     return this.starshipRepository.findOne({
       where: {
         name,
+      },
+      relations: {
+        passengers: true,
+        enemies: true
       }
     });
   }
@@ -72,8 +81,6 @@ export class StarshipsService {
   async calculateDistanceToPlanet(name: string, targetName: string): Promise<string>{
     const starship = await this.findOne(name);
     const targePlanet = await this.planetService.findOne(targetName);
-    // const starshipCoordinates = starship.currentLocation.coordinates.join(" ")
-    // const targePlanetCoordinates = targePlanet.location.coordinates.join(" ");
     const distanceInMeters = await this.starshipRepository.query(
       `SELECT ST_Distance(
         'SRID=4326;POINT(${starship.currentLocation.coordinates.join(" ")})'::geography,
@@ -105,51 +112,46 @@ export class StarshipsService {
     return enemies;
   }
 
-  async spawnRandomEnemy(url: string = 'https://swapi.py4e.com/api/starships?page=4'){
+  async spawnRandomEnemy(url: string = 'https://swapi.py4e.com/api/starships'){
 
-      
-      const liveStarships: Starship[] = await this.findAll();
-      const res = await fetch(`${url}`)
-      const starshipsJson = await res.json()
-      const starships = starshipsJson.results
+    const liveStarships: Starship[] = await this.findAll();
+    const res = await fetch(`${url}`)
+    const starshipsJson = await res.json()
+    const starships = starshipsJson.results
 
-      for(let i = 0; i < starships.length; i++){
-        const newStarship = starships[i]
-        const foundStarshipWithThatName = this.findObjectByProperty(liveStarships, 'name', newStarship.name)
-        if(!foundStarshipWithThatName){
-          if(!this.isConvertibleToNumber(newStarship.cargo_capacity)){
-            newStarship.cargo_capacity = null
-          }
-          return this.create({name: newStarship.name as string, model: newStarship.model as string, cargoCapacity: newStarship.cargo_capacity as string, currentLocation: {type: "Point", coordinates: this.getRandomLongitudeAndLatitude()} as Point})
+    for(let i = 0; i < starships.length; i++){
+      const newStarship = starships[i]
+      const foundStarshipWithThatName = findObjectByProperty<Starship>(liveStarships, 'name', newStarship.name)
+      if(!foundStarshipWithThatName){
+        if(!isConvertibleToNumber(newStarship.cargo_capacity)){
+          newStarship.cargo_capacity = null
         }
+        return this.create({name: newStarship.name as string, model: newStarship.model as string, cargoCapacity: newStarship.cargo_capacity as string, currentLocation: {type: "Point", coordinates: getRandomLongitudeAndLatitude()} as Point})
       }
+    }
 
-      if(!starshipsJson.next){
-        throw new Error('Cannot create a new random starship - Out of data');
-      } else {
-        return this.spawnRandomEnemy(starshipsJson.next);
+    if(!starshipsJson.next){
+      throw new Error('Cannot create a new random starship - Out of data');
+    } else {
+      return this.spawnRandomEnemy(starshipsJson.next);
+    }
+  }
+
+  async declareEnemy(name: string, enemyName: string){
+    const starship = await this.starshipRepository.findOne({
+      where: {
+        name
+      },
+      relations: {
+        enemies: true
       }
-  }
-
-  findObjectByProperty(array: Starship[], property: string, value: string) {
-    return array.find(obj => obj[property] === value);
-  }
-
-  getRandomLongitudeAndLatitude() {
-    const minLongitude = -180;
-    const maxLongitude = 180;
-    const minLatitude = -90;
-    const maxLatitude = 90;
-    
-    const randomLongitude = Math.random() * (maxLongitude - minLongitude) + minLongitude;
-    const randomLatitude = Math.random() * (maxLatitude - minLatitude) + minLatitude;
-    return [randomLongitude, randomLatitude];
-  }
-
-  isConvertibleToNumber(value: string): boolean {
-    // Try parsing the string as a number
-    const parsedValue = parseFloat(value);
-    // Check if the parsed value is not NaN
-    return !isNaN(parsedValue);
+    });
+    const enemyStarship = await this.starshipRepository.findOne({
+      where: {
+        name: enemyName
+      }
+    })
+    starship.enemies.push(enemyStarship);
+    return this.starshipRepository.save(starship);
   }
 }

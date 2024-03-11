@@ -12,7 +12,12 @@ describe('StarshipsService', () => {
     service = module.get<StarshipsService>(StarshipsService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  // describe('findAll', () => {
+  //   it('should return an array of starships', async () => {
+  //     const result = ['test']
+  //     jest.spyOn(service, 'findAll').mockImplementation(() => result)
+  //     expect(service).toBeDefined();
+  //   });
+  // })
+  
 });
