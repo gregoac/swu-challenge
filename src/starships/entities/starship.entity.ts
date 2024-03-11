@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Column, Entity, Point, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Point, ManyToMany, OneToMany, Geography, PrimaryColumn } from 'typeorm';
 import { Character } from 'src/characters/entities/character.entity';
 import { PointType } from 'src/types';
 
@@ -14,13 +14,14 @@ export class Starship {
   @Field()
   model: string;
 
-  @Column()
-  @Field(_ => Int)
-  cargoCapacity: number;
-
+  @Column({type: "bigint", nullable: true})
+  @Field()
+  cargoCapacity: string | null;
+  
+  /* LON/LAT */
   @Column({
-    type: 'geography',
-    spatialFeatureType: 'point',
+    type: "geography",
+    spatialFeatureType: "point",
     srid: 4326,
   })
   @Field(_ => PointType)

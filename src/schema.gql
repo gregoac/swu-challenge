@@ -30,7 +30,7 @@ input CreatePlanetInput {
 }
 
 input CreateStarshipInput {
-  cargoCapacity: Int!
+  cargoCapacity: String!
   currentLocation: PointTypeInput!
   model: String!
   name: String!
@@ -46,6 +46,8 @@ type Mutation {
   removeCharacter(name: String!): Character!
   removePlanet(name: String!): Planet!
   removeStarship(name: String!): Starship!
+  spawnRandomEnemy: Starship!
+  travelToPlanet(StarshipAndPlanetInput: StarshipAndPlanetInput!): Starship!
   updateCharacter(updateCharacterInput: UpdateCharacterInput!): Character!
   updatePlanet(updatePlanetInput: UpdatePlanetInput!): Planet!
   updateStarship(updateStarshipInput: UpdateStarshipInput!): Starship!
@@ -70,10 +72,12 @@ input PointTypeInput {
 }
 
 type Query {
+  calcultateDistanceToPlanet(starshipAndPlanetTargetName: StarshipAndPlanetInput!): String!
   character(name: String!): Character!
   characters: [Character!]!
   planet(name: String!): Planet!
   planets: [Planet!]!
+  searchForNearByEnemies(name: String!): [Starship!]!
   starship(name: String!): Starship!
   starships: [Starship!]!
 }
@@ -84,12 +88,17 @@ input RelocateCharacterInput {
 }
 
 type Starship {
-  cargoCapacity: Int!
+  cargoCapacity: String!
   currentLocation: PointType!
   enemies: [Starship!]
   model: String!
   name: String!
   passengers: [Character!]
+}
+
+input StarshipAndPlanetInput {
+  name: String!
+  targePlanetName: String!
 }
 
 input UpdateCharacterInput {
@@ -107,7 +116,7 @@ input UpdatePlanetInput {
 }
 
 input UpdateStarshipInput {
-  cargoCapacity: Int
+  cargoCapacity: String
   currentLocation: PointTypeInput
   model: String
   name: String!

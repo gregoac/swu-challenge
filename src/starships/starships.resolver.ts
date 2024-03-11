@@ -1,8 +1,9 @@
-import { Resolver, Query, Mutation, Args, Parent, ResolveField } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args} from '@nestjs/graphql';
 import { StarshipsService } from './starships.service';
 import { Starship } from './entities/starship.entity';
 import { CreateStarshipInput } from './dto/create-starship.input';
 import { UpdateStarshipInput } from './dto/update-starship.input';
+import { StarshipAndPlanetInput } from './dto/travel-to-planet.input';
 import { BoardingOrDisembarkingCharacterInput } from './dto/boarding-disembarking-character.input';
 
 @Resolver(_ => Starship)
@@ -24,6 +25,16 @@ export class StarshipsResolver {
   @Query(_ => Starship, { name: 'starship' })
   findOne(@Args('name') name: string) {
     return this.starshipsService.findOne(name);
+  }
+
+  @Query(_ => String)
+  calcultateDistanceToPlanet(@Args('starshipAndPlanetTargetName') starshipAndPlanetTargetName: StarshipAndPlanetInput){
+    return this.starshipsService.calculateDistanceToPlanet(starshipAndPlanetTargetName.name, starshipAndPlanetTargetName.targePlanetName);
+  }
+
+  @Query(_ => [Starship])
+  searchForNearByEnemies(@Args('name') name: string){
+    return this.starshipsService.searchForNearByEnemies(name);
   }
 
   @Mutation(_ => Starship)
@@ -49,5 +60,19 @@ export class StarshipsResolver {
   @Mutation(_ => Starship)
   disembarkingCharacter(@Args('disembarkingCharacterInput') disembarkingCharacterInput: BoardingOrDisembarkingCharacterInput){
     return this.starshipsService.disembarkingCharacter(disembarkingCharacterInput.name, disembarkingCharacterInput.characterName);
+  }
+
+  @Mutation(_ => Starship)
+  travelToPlanet(@Args('StarshipAndPlanetInput') StarshipAndPlanetInput: StarshipAndPlanetInput){
+    return this.starshipsService.travelToPlanet(StarshipAndPlanetInput.name, StarshipAndPlanetInput.targePlanetName)
+  }
+
+  @Mutation(_ => Starship)
+  async spawnRandomEnemy(){
+    try {
+      return this.starshipsService.spawnRandomEnemy();
+    } catch(e){
+      return e
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Column, Entity, PrimaryColumn, Point } from 'typeorm';
+import { Column, Entity, PrimaryColumn, Point, Geography } from 'typeorm';
 import { PointType } from 'src/types';
 
 @Entity()
@@ -21,9 +21,10 @@ export class Planet {
   @Field()
   terrain: string;
 
+  /* LON/LAT */
   @Column({
-    type: 'geography',
-    spatialFeatureType: 'point',
+    type: "geography",
+    spatialFeatureType: "point",
     srid: 4326,
   })
   @Field(_ => PointType)

@@ -14,8 +14,8 @@ export class CreateStarshipInput {
   model: string;
 
   @IsNotEmpty()
-  @Field(_ => Int)
-  cargoCapacity: number;
+  @Field()
+  cargoCapacity: string;
 
   @IsNotEmpty()
   @Field(_ => PointTypeInput)
