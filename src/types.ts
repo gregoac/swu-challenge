@@ -1,18 +1,34 @@
-import { ObjectType, Field, Int, InputType } from "@nestjs/graphql";
+import { ObjectType, Field, Float, InputType } from "@nestjs/graphql";
+
+// @ObjectType()
+// export class Coordinates {
+//   @Field(type => Float)
+//   lat: number;
+//   @Field(type => Float)
+//   lon: number;
+// }
 
 @ObjectType()
-export class Coordinates {
-  @Field(type => Int)
-  latitude: number;
-  @Field(type => Int)
-  longitude: number;
+export class PointType {
+  @Field()
+  type: string;
+  @Field(_ => [Float])
+  coordinates: number[]
 }
 
-@InputType()
-export class CoordinatesInput {
-  @Field(_ => Int)
-  latitude: number;
+// @InputType()
+// export class CoordinatesInput {
+//   @Field(_ => Float)
+//   lat: number;
 
-  @Field(_ => Int)
-  longitude: number;
+//   @Field(_ => Float)
+//   lon: number;
+// }
+
+@InputType()
+export class PointTypeInput {
+  @Field()
+  type: string;
+  @Field(_ => [Float])
+  coordinates: number[]
 }

@@ -1,6 +1,7 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { Point } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
-import { CoordinatesInput } from 'src/types';
+import { PointTypeInput } from 'src/types';
 
 @InputType()
 export class CreateStarshipInput {
@@ -17,6 +18,6 @@ export class CreateStarshipInput {
   cargoCapacity: number;
 
   @IsNotEmpty()
-  @Field(_ => CoordinatesInput)
-  currentLocation: CoordinatesInput;
+  @Field(_ => PointTypeInput)
+  currentLocation: Point;
 }

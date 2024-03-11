@@ -1,6 +1,7 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Float, Field } from '@nestjs/graphql';
 import { IsNotEmpty, MaxLength } from 'class-validator';
-import { CoordinatesInput } from 'src/types';
+import { PointTypeInput } from 'src/types';
+import { Point } from 'typeorm';
 
 @InputType()
 export class CreatePlanetInput {
@@ -24,6 +25,6 @@ export class CreatePlanetInput {
   terrain: string;
 
   @IsNotEmpty()
-  @Field(_ => CoordinatesInput)
-  coordinates: CoordinatesInput;
+  @Field(_ => PointTypeInput)
+  location: Point;
 }

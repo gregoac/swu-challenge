@@ -15,16 +15,6 @@ type Character {
   starship: Starship
 }
 
-type Coordinates {
-  latitude: Int!
-  longitude: Int!
-}
-
-input CoordinatesInput {
-  latitude: Int!
-  longitude: Int!
-}
-
 input CreateCharacterInput {
   name: String!
   sensitivityToTheForce: String!
@@ -33,7 +23,7 @@ input CreateCharacterInput {
 
 input CreatePlanetInput {
   climate: String!
-  coordinates: CoordinatesInput!
+  location: PointTypeInput!
   name: String!
   population: Int!
   terrain: String!
@@ -41,7 +31,7 @@ input CreatePlanetInput {
 
 input CreateStarshipInput {
   cargoCapacity: Int!
-  currentLocation: CoordinatesInput!
+  currentLocation: PointTypeInput!
   model: String!
   name: String!
 }
@@ -63,10 +53,20 @@ type Mutation {
 
 type Planet {
   climate: String!
-  coordinates: Coordinates!
+  location: PointType!
   name: String!
   population: Int!
   terrain: String!
+}
+
+type PointType {
+  coordinates: [Float!]!
+  type: String!
+}
+
+input PointTypeInput {
+  coordinates: [Float!]!
+  type: String!
 }
 
 type Query {
@@ -85,7 +85,7 @@ input RelocateCharacterInput {
 
 type Starship {
   cargoCapacity: Int!
-  currentLocation: Coordinates!
+  currentLocation: PointType!
   enemies: [Starship!]
   model: String!
   name: String!
@@ -100,7 +100,7 @@ input UpdateCharacterInput {
 
 input UpdatePlanetInput {
   climate: String
-  coordinates: CoordinatesInput
+  location: PointTypeInput
   name: String!
   population: Int
   terrain: String
@@ -108,7 +108,7 @@ input UpdatePlanetInput {
 
 input UpdateStarshipInput {
   cargoCapacity: Int
-  currentLocation: CoordinatesInput
+  currentLocation: PointTypeInput
   model: String
   name: String!
 }

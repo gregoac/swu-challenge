@@ -1,7 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Column, Entity, Index, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
-import { Coordinates } from 'src/types';
+import { Column, Entity, Point, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
 import { Character } from 'src/characters/entities/character.entity';
+import { PointType } from 'src/types';
 
 @Entity()
 @ObjectType()
@@ -18,9 +18,13 @@ export class Starship {
   @Field(_ => Int)
   cargoCapacity: number;
 
-  @Column({type: 'json'})
-  @Field(_ => Coordinates)
-  currentLocation: Coordinates;
+  @Column({
+    type: 'geography',
+    spatialFeatureType: 'point',
+    srid: 4326,
+  })
+  @Field(_ => PointType)
+  currentLocation: Point;
 
   @OneToMany(_ => Character, character => character.starship, {nullable: true, eager: true})
   @Field(_ => [Character], {nullable: true})
