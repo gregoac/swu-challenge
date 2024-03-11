@@ -57,7 +57,7 @@ export class StarshipsService {
 
   async boardingCharacter(name: string, boardingCharacterName: string): Promise<Starship>{
     let character = await this.characterService.findOne(boardingCharacterName);
-    if(character.currentLocation){
+    if(character.current_location){
       character = await this.characterService.relocateOrRemoveCharacterFromPlanet(character.name)
     }
     const starship = await this.findOne(name);
@@ -74,7 +74,7 @@ export class StarshipsService {
   async travelToPlanet(name: string, targetPlanetName: string): Promise<Starship>{
     const starship = await this.findOne(name);
     const targetPlanet = await this.planetService.findOne(targetPlanetName)
-    starship.currentLocation = targetPlanet.location
+    starship.current_location = targetPlanet.location
     return this.starshipRepository.save(starship);
   }
 
@@ -83,7 +83,7 @@ export class StarshipsService {
     const targePlanet = await this.planetService.findOne(targetName);
     const distanceInMeters = await this.starshipRepository.query(
       `SELECT ST_Distance(
-        'SRID=4326;POINT(${starship.currentLocation.coordinates.join(" ")})'::geography,
+        'SRID=4326;POINT(${starship.current_location.coordinates.join(" ")})'::geography,
         'SRID=4326;POINT(${targePlanet.location.coordinates.join(" ")})'::geography);`
     )
     return `The distance between ${name} starship and ${targetName} planet is: ${(distanceInMeters[0].st_distance / 1000).toFixed(2)} km`;
@@ -91,7 +91,7 @@ export class StarshipsService {
 
   async searchForNearByEnemies(name: string): Promise<Starship[]>{
     const starship = await this.findOne(name);
-    const starshipCoordinates = starship.currentLocation.coordinates.join(" ")
+    const starshipCoordinates = starship.current_location.coordinates.join(" ")
     const nearByStarships = await this.starshipRepository.query(
       `SELECT "name", "model", "cargoCapacity", ST_AsText("currentLocation") as "currentLocation"
       FROM starship
@@ -101,9 +101,9 @@ export class StarshipsService {
     const enemies = nearByStarships.filter(starshipNearBy => starshipNearBy.name !== name)
 
     enemies.map(enemyNearBy => {
-      const numbersArray = enemyNearBy.currentLocation.match(/-?\d+(\.\d+)?/g)
+      const numbersArray = enemyNearBy.current_location.match(/-?\d+(\.\d+)?/g)
       const numbers = numbersArray.map(Number);
-      enemyNearBy.currentLocation = {
+      enemyNearBy.current_location = {
         type: "Point",
         coordinates: numbers
       }
@@ -126,7 +126,7 @@ export class StarshipsService {
         if(!isConvertibleToNumber(newStarship.cargo_capacity)){
           newStarship.cargo_capacity = null
         }
-        return this.create({name: newStarship.name as string, model: newStarship.model as string, cargoCapacity: newStarship.cargo_capacity as string, currentLocation: {type: "Point", coordinates: getRandomLongitudeAndLatitude()} as Point})
+        return this.create({name: newStarship.name as string, model: newStarship.model as string, cargo_capacity: newStarship.cargo_capacity as string, current_location: {type: "Point", coordinates: getRandomLongitudeAndLatitude()} as Point})
       }
     }
 

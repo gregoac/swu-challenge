@@ -16,7 +16,7 @@ export class Starship {
 
   @Column({type: "bigint", nullable: true})
   @Field()
-  cargoCapacity: string | null;
+  cargo_capacity: string | null;
   
   /* LON/LAT */
   @Column({
@@ -25,7 +25,7 @@ export class Starship {
     srid: 4326,
   })
   @Field(_ => PointType)
-  currentLocation: Point;
+  current_location: Point;
 
   @OneToMany(_ => Character, character => character.starship, {nullable: true})
   @Field(_ => [Character], {nullable: true})

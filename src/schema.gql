@@ -8,7 +8,7 @@ input BoardingOrDisembarkingCharacterInput {
 }
 
 type Character {
-  currentLocation: Planet
+  current_location: Planet
   name: String!
   sensitivityToTheForce: String!
   species: String!
@@ -30,8 +30,8 @@ input CreatePlanetInput {
 }
 
 input CreateStarshipInput {
-  cargoCapacity: String!
-  currentLocation: PointTypeInput!
+  cargo_capacity: String!
+  current_location: PointTypeInput!
   model: String!
   name: String!
 }
@@ -94,8 +94,8 @@ input RelocateCharacterInput {
 }
 
 type Starship {
-  cargoCapacity: String!
-  currentLocation: PointType!
+  cargo_capacity: String!
+  current_location: PointType!
   enemies: [Starship!]
   model: String!
   name: String!
@@ -122,8 +122,8 @@ input UpdatePlanetInput {
 }
 
 input UpdateStarshipInput {
-  cargoCapacity: String
-  currentLocation: PointTypeInput
+  cargo_capacity: String
+  current_location: PointTypeInput
   model: String
   name: String!
 }

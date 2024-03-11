@@ -47,10 +47,10 @@ export class CharactersService {
 
   /*When invoked without the second parameter this function will remove the named character from its current
     planet if it has. Otherwise it will relocate it to the new targetPlanet unless the targetPlanet isn't
-    found in which case it set the currentLocation of the character to `null`*/
+    found in which case it set the current_location of the character to `null`*/
   async relocateOrRemoveCharacterFromPlanet(name: string, targePlanet: string = ""): Promise<Character>{
     const planet = await this.planetService.findOne(targePlanet);
-    await this.characterRepository.update(name, {currentLocation: planet})
+    await this.characterRepository.update(name, {current_location: planet})
     return this.findOne(name);
   }
 }

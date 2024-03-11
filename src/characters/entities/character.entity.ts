@@ -20,7 +20,7 @@ export class Character {
 
   @ManyToOne(_ => Planet, planet => planet.name, {onDelete: "CASCADE", nullable: true, eager: true})
   @Field(_ => Planet, {nullable: true})
-  currentLocation?: Planet;
+  current_location?: Planet;
   
   @ManyToOne(_ => Starship, starship => starship.passengers, {onDelete: "CASCADE", nullable: true})
   @Field(_ => Starship, {nullable: true})

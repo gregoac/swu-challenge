@@ -15,9 +15,9 @@ export class CreateStarshipInput {
 
   @IsNotEmpty()
   @Field()
-  cargoCapacity: string;
+  cargo_capacity: string;
 
   @IsNotEmpty()
   @Field(_ => PointTypeInput)
-  currentLocation: Point;
+  current_location: Point;
 }
