@@ -25,7 +25,7 @@ export class CharactersService {
   }
 
   async findOne(name: string): Promise<Character> {
-    const result = await this.characterRepository.findOne({
+    const result = await this.characterRepository.findOneOrFail({
       where: {
         name
       },

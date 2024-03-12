@@ -33,7 +33,7 @@ export class StarshipsService {
   }
 
   async findOne(name: string): Promise<Starship> {
-    return this.starshipRepository.findOne({
+    return this.starshipRepository.findOneOrFail({
       where: {
         name,
       },
@@ -90,7 +90,15 @@ export class StarshipsService {
   }
 
   async searchForNearByEnemies(name: string): Promise<Starship[]>{
-    const starship = await this.findOne(name);
+
+    const starship = await this.starshipRepository.findOneOrFail({
+      where: {
+        name
+      },
+      relations: {
+        enemies: true
+      }
+    });
     const starshipCoordinates = starship.current_location.coordinates.join(" ")
     // fetch for starships names within a range in meteres
     const nearByStarships = await this.starshipRepository.query(
@@ -104,16 +112,17 @@ export class StarshipsService {
     nearByStarships.forEach(nearByStarship => {
         // filter those who are enemies
         const matchingEnemy = starship.enemies.find(enemy => enemy.name === nearByStarship.name);
-
+        // push enemey into the response
         if (matchingEnemy) {
           enemies.push(matchingEnemy);
         }
     });
 
     return enemies;
+    
   }
 
-  async spawnRandomEnemy(url: string = 'https://swapi.py4e.com/api/starships'){
+  async spawnRandomEnemy(url: string = 'https://swapi.py4e.com/api/starships?page=4'){
 
     const liveStarships: Starship[] = await this.findAll();
     const res = await fetch(`${url}`)
@@ -139,7 +148,7 @@ export class StarshipsService {
   }
 
   async declareEnemy(name: string, enemyName: string){
-    const starship = await this.starshipRepository.findOne({
+    const starship = await this.starshipRepository.findOneOrFail({
       where: {
         name
       },
@@ -147,7 +156,7 @@ export class StarshipsService {
         enemies: true
       }
     });
-    const enemyStarship = await this.starshipRepository.findOne({
+    const enemyStarship = await this.starshipRepository.findOneOrFail({
       where: {
         name: enemyName
       }

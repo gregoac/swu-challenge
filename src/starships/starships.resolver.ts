@@ -69,16 +69,12 @@ export class StarshipsResolver {
   }
 
   @Mutation(_ => Starship)
-  async spawnRandomEnemy(){
-    try {
+  spawnRandomEnemy(){
       return this.starshipsService.spawnRandomEnemy();
-    } catch(e){
-      return e
-    }
   }
 
   @Mutation(_ => Starship)
   declareEnemy(@Args("declareEnemyInput") declareEnemyInput: DeclareEnemyInput){
-    return this.starshipsService.declareEnemy(declareEnemyInput.name, declareEnemyInput.enemyName);
+      return this.starshipsService.declareEnemy(declareEnemyInput.name, declareEnemyInput.enemyName);
   } 
 }
