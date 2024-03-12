@@ -92,37 +92,23 @@ export class StarshipsService {
   async searchForNearByEnemies(name: string): Promise<Starship[]>{
     const starship = await this.findOne(name);
     const starshipCoordinates = starship.current_location.coordinates.join(" ")
+    // fetch for starships names within a range in meteres
     const nearByStarships = await this.starshipRepository.query(
-      `SELECT "name", "model", "cargo_capacity", ST_AsText("current_location") as "current_location"
+      `SELECT "name"
       FROM starship
-      WHERE ST_DWithin("current_location", 'POINT(${starshipCoordinates})', 100000000.0)`
+      WHERE ST_DWithin("current_location", 'POINT(${starshipCoordinates})', 10000000.0)`
     )
 
-    // Removes starship that set the coordinates for the search
-    const nearByStarshipWithoutOwn = nearByStarships.filter(nearByStarship => nearByStarship.name !== name);
-
-    const enemies = [];
-
-    // Loop through the enemies listed in the starship upon which we want to make the query
-    starship.enemies.forEach(enemy => {
-        // Find matching object in the second array based on 'name'. Check that the found starship 
-        // within the range is an enemy
-        const matchingEnemy = nearByStarshipWithoutOwn.find(nearByStarship => nearByStarship.name === enemy.name);
+    let enemies = [];
+    // loop through starships near by
+    nearByStarships.forEach(nearByStarship => {
+        // filter those who are enemies
+        const matchingEnemy = starship.enemies.find(enemy => enemy.name === nearByStarship.name);
 
         if (matchingEnemy) {
           enemies.push(matchingEnemy);
         }
     });
-
-    // Formats to graphql interface
-    enemies.map(enemyNearBy => {
-      const numbersArray = enemyNearBy.current_location.match(/-?\d+(\.\d+)?/g)
-      const numbers = numbersArray.map(Number);
-      enemyNearBy.current_location = {
-        type: "Point",
-        coordinates: numbers
-      }
-    })
 
     return enemies;
   }
