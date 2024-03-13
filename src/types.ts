@@ -27,8 +27,8 @@ export class PointType {
 
 @InputType()
 export class PointTypeInput {
-  @Field()
+  @Field({description: 'Only supports "Point" value for now'})
   type: string;
-  @Field(_ => [Float])
+  @Field(_ => [Float], {description: 'Format is [lon, lat]'})
   coordinates: number[]
 }

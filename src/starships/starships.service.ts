@@ -19,7 +19,6 @@ export class StarshipsService {
   ){}
 
   async create(createStarshipInput: CreateStarshipInput): Promise<Starship> {
-    // const newStarship = this.starshipRepository.create(createStarshipInput)
     return this.starshipRepository.save(createStarshipInput);
   }
 
@@ -33,7 +32,7 @@ export class StarshipsService {
   }
 
   async findOne(name: string): Promise<Starship> {
-    return this.starshipRepository.findOne({
+    return this.starshipRepository.findOneOrFail({
       where: {
         name,
       },
@@ -91,7 +90,7 @@ export class StarshipsService {
 
   async searchForNearByEnemies(name: string): Promise<Starship[]>{
 
-    const starship = await this.starshipRepository.findOne({
+    const starship = await this.starshipRepository.findOneOrFail({
       where: {
         name
       },
@@ -148,7 +147,7 @@ export class StarshipsService {
   }
 
   async declareEnemy(name: string, enemyName: string){
-    const starship = await this.starshipRepository.findOne({
+    const starship = await this.starshipRepository.findOneOrFail({
       where: {
         name
       },
@@ -156,7 +155,7 @@ export class StarshipsService {
         enemies: true,
       }
     });
-    const enemyStarship = await this.starshipRepository.findOne({
+    const enemyStarship = await this.starshipRepository.findOneOrFail({
       where: {
         name: enemyName
       }

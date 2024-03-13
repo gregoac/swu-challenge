@@ -18,22 +18,22 @@ export class StarshipsResolver {
     return this.starshipsService.create(createStarshipInput);
   }
 
-  @Query(_ => [Starship], { name: 'starships' })
+  @Query(_ => [Starship], { name: 'starships'})
   findAll() {
     return this.starshipsService.findAll();
   }
 
   @Query(_ => Starship, { name: 'starship' })
   findOne(@Args('name') name: string) {
-    return this.starshipsService.findOne(name);
+      return this.starshipsService.findOne(name);
   }
 
-  @Query(_ => String)
+  @Query(_ => String, {description: 'Calculates the distance from a given starship to a given planet'})
   calcultateDistanceToPlanet(@Args('starshipAndPlanetTargetName') starshipAndPlanetTargetName: StarshipAndPlanetInput){
     return this.starshipsService.calculateDistanceToPlanet(starshipAndPlanetTargetName.name, starshipAndPlanetTargetName.targePlanetName);
   }
 
-  @Query(_ => [Starship])
+  @Query(_ => [Starship], {description: 'Search for near by enemy starships'})
   searchForNearByEnemies(@Args('name') name: string){
     return this.starshipsService.searchForNearByEnemies(name);
   }
@@ -73,7 +73,7 @@ export class StarshipsResolver {
       return this.starshipsService.spawnRandomEnemy();
   }
 
-  @Mutation(_ => Starship)
+  @Mutation(_ => Starship, {name: 'declareStarshipEnemy'})
   declareEnemy(@Args("declareEnemyInput") declareEnemyInput: DeclareEnemyInput){
       return this.starshipsService.declareEnemy(declareEnemyInput.name, declareEnemyInput.enemyName);
   } 

@@ -45,7 +45,7 @@ type Mutation {
   createCharacter(createCharacterInput: CreateCharacterInput!): Character!
   createPlanet(createPlanetInput: CreatePlanetInput!): Planet!
   createStarship(createStarshipInput: CreateStarshipInput!): Starship!
-  declareEnemy(declareEnemyInput: DeclareEnemyInput!): Starship!
+  declareStarshipEnemy(declareEnemyInput: DeclareEnemyInput!): Starship!
   disembarkingCharacter(disembarkingCharacterInput: BoardingOrDisembarkingCharacterInput!): Starship!
   relocateCharacter(relocateCharacterInput: RelocateCharacterInput!): Character!
   removeCharacter(name: String!): Character!
@@ -72,16 +72,22 @@ type PointType {
 }
 
 input PointTypeInput {
+  """Format is [lon, lat]"""
   coordinates: [Float!]!
+
+  """Only supports "Point" value for now"""
   type: String!
 }
 
 type Query {
+  """Calculates the distance from a given starship to a given planet"""
   calcultateDistanceToPlanet(starshipAndPlanetTargetName: StarshipAndPlanetInput!): String!
   character(name: String!): Character!
   characters: [Character!]!
   planet(name: String!): Planet!
   planets: [Planet!]!
+
+  """Search for near by enemy starships"""
   searchForNearByEnemies(name: String!): [Starship!]!
   starship(name: String!): Starship!
   starships: [Starship!]!
@@ -102,7 +108,10 @@ type Starship {
 }
 
 input StarshipAndPlanetInput {
+  """Starship name"""
   name: String!
+
+  """Planet from which we want to know the distance"""
   targePlanetName: String!
 }
 

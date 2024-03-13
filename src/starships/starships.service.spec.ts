@@ -17,19 +17,19 @@ describe('StarshipsService', () => {
   const starshipRepositoryMock: MockType<Repository<Starship>> = {
     delete: jest.fn(),
     save: jest.fn(),
-    findOne: jest.fn(),
+    findOneOrFail: jest.fn(),
     find: jest.fn(),
     update: jest.fn(),
     query: jest.fn(),
   };
   const characterRepositoryMock: MockType<Repository<Character>> = {
     save: jest.fn(),
-    findOne: jest.fn(),
+    findOneOrFail: jest.fn(),
     find: jest.fn(),
   };
   const planetRepositoryMock: MockType<Repository<Planet>> = {
     save: jest.fn(),
-    findOne: jest.fn(),
+    findOneOrFail: jest.fn(),
     find: jest.fn(),
   };
 
@@ -133,10 +133,10 @@ describe('StarshipsService', () => {
         passengers: [],
         enemies: []
       };
-      starshipRepositoryMock.findOne.mockReturnValue(starship);
+      starshipRepositoryMock.findOneOrFail.mockReturnValue(starship);
       const foundStarship = await service.findOne(starship.name);
       expect(foundStarship).toMatchObject(starship);
-      expect(starshipRepositoryMock.findOne).toHaveBeenCalledWith({ where: { name: starship.name }, relations: {passengers: true, enemies: true} });
+      expect(starshipRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: { name: starship.name }, relations: {passengers: true, enemies: true} });
     });
   });
 
@@ -215,12 +215,12 @@ describe('StarshipsService', () => {
         ]
       }
 
-      characterRepositoryMock.findOne.mockReturnValue(character)
-      starshipRepositoryMock.findOne.mockReturnValue(starship)
+      characterRepositoryMock.findOneOrFail.mockReturnValue(character)
+      starshipRepositoryMock.findOneOrFail.mockReturnValue(starship)
       starshipRepositoryMock.save.mockReturnValue(starshipWithPassanger)
       const resultStarship = await service.boardingCharacter(starshipName, characterName)
-      expect(characterRepositoryMock.findOne).toHaveBeenCalledWith({ where: {name: characterName}})
-      expect(starshipRepositoryMock.findOne).toHaveBeenCalledWith({ where: {name: starshipName}, relations: {passengers: true, enemies: true}})
+      expect(characterRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: {name: characterName}})
+      expect(starshipRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: {name: starshipName}, relations: {passengers: true, enemies: true}})
       expect(starshipRepositoryMock.save).toHaveBeenCalledWith(starshipWithPassanger)
       expect(resultStarship).toMatchObject(starshipWithPassanger)
     })
@@ -254,10 +254,10 @@ describe('StarshipsService', () => {
         ]
       }
 
-      starshipRepositoryMock.findOne.mockReturnValue(starshipWithPassanger)
+      starshipRepositoryMock.findOneOrFail.mockReturnValue(starshipWithPassanger)
       starshipRepositoryMock.save.mockReturnValue(starship)
       const resultStarship = await service.disembarkingCharacter(starshipName, characterName)
-      expect(starshipRepositoryMock.findOne).toHaveBeenCalledWith({ where: {name: starshipName}, relations: {passengers: true, enemies: true}})
+      expect(starshipRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: {name: starshipName}, relations: {passengers: true, enemies: true}})
       expect(starshipRepositoryMock.save).toHaveBeenCalledWith(starship)
       expect(resultStarship).toMatchObject(starship)
     })
@@ -289,12 +289,12 @@ describe('StarshipsService', () => {
 
       const starshipInPlanet = {...starship, current_location: {...planet.location}}
 
-      starshipRepositoryMock.findOne.mockReturnValue(starship)
-      planetRepositoryMock.findOne.mockReturnValue(planet)
+      starshipRepositoryMock.findOneOrFail.mockReturnValue(starship)
+      planetRepositoryMock.findOneOrFail.mockReturnValue(planet)
       starshipRepositoryMock.save.mockReturnValue(starshipInPlanet)
       const starshipResult = await service.travelToPlanet(starship.name, planet.name);
-      expect(planetRepositoryMock.findOne).toHaveBeenCalledWith({ where: {name: planet.name}})
-      expect(starshipRepositoryMock.findOne).toHaveBeenCalledWith({ where: {name: starship.name}, relations: {passengers: true, enemies: true}})
+      expect(planetRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: {name: planet.name}})
+      expect(starshipRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: {name: starship.name}, relations: {passengers: true, enemies: true}})
       expect(starshipRepositoryMock.save).toHaveBeenCalledWith(starshipInPlanet)
       expect(starshipResult).toMatchObject(starshipInPlanet)
     })
@@ -330,12 +330,12 @@ describe('StarshipsService', () => {
         }
       ]
 
-      starshipRepositoryMock.findOne.mockReturnValue(starship)
-      planetRepositoryMock.findOne.mockReturnValue(planet)
+      starshipRepositoryMock.findOneOrFail.mockReturnValue(starship)
+      planetRepositoryMock.findOneOrFail.mockReturnValue(planet)
       starshipRepositoryMock.query.mockReturnValue(st_distance)
       const distanceText = await service.calculateDistanceToPlanet(starship.name, planet.name);
-      expect(planetRepositoryMock.findOne).toHaveBeenCalledWith({ where: {name: planet.name}})
-      expect(starshipRepositoryMock.findOne).toHaveBeenCalledWith({ where: {name: starship.name}, relations: {passengers: true, enemies: true}})
+      expect(planetRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: {name: planet.name}})
+      expect(starshipRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: {name: starship.name}, relations: {passengers: true, enemies: true}})
       //expect(starshipRepositoryMock.query).toHaveBeenCalledWith("SELECT ST_Distance('SRID=4326;POINT(122 34)'::geography, 'SRID=4326;POINT(125 30)'::geography);")
       expect(distanceText).toMatch(`The distance between ${starship.name} starship and ${planet.name} planet is: ${(st_distance[0].st_distance / 1000).toFixed(2)} km`)
     })
@@ -369,10 +369,10 @@ describe('StarshipsService', () => {
         {name: "Starship 2"}
       ]
 
-      starshipRepositoryMock.findOne.mockReturnValue(starship)
+      starshipRepositoryMock.findOneOrFail.mockReturnValue(starship)
       starshipRepositoryMock.query.mockReturnValue(starshipsNearBy)
       const enemies = await service.searchForNearByEnemies(starship.name)
-      expect(starshipRepositoryMock.findOne).toHaveBeenCalledWith({where: {name: starship.name}, relations: {enemies: true}})
+      expect(starshipRepositoryMock.findOneOrFail).toHaveBeenCalledWith({where: {name: starship.name}, relations: {enemies: true}})
       // expect(starshipRepositoryMock.query).toHaveBeenCalledWith(
       //   `SELECT "name"
       //   FROM starship
