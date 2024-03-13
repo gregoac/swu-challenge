@@ -1,73 +1,75 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Project Overview
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a NestJS based web application that simulates the Star Wars universe, providing CRUD operations for Characters, Planets and Starships among other functionalities using GraphQL transport layer. The project also uses PostgreSQL extension PostGIS for GPS-like capabilities and features unit tests.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Technical Stack
 
-## Description
+- **Framework:** [NestJS](https://nestjs.com/)
+- **TypeScript Version:** 5.1.3
+- **ORM**: [TypeORM](https://typeorm.io/)
+- **Transport Layer**: [GraphQL](https://graphql.org/)
+- **Database System**: [PostgreSQL](https://www.postgresql.org/)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Setup
 
-## Installation
+1. Setup PostgreSQL with the PostGIS extension.
+2. After pulling the project, run `npm install` to install necessary dependencies.
+3. Set the database configuration in the `app.module`
+4. Run `npm run start` to start the project.
+5. Go to the page `/graphql` to access the query interface.
+6. Run `npm run test` to run the unit tests.
 
-```bash
-$ npm install
-```
+## Functionalities
 
-## Running the app
+- **CRUD operations:** Available for all entities.
+- **Move characters and starships through planets:** You could relocate a character or a starship in a planet just giving the character or starship and planet name.
+- **Calculate distances:** Using PostGIS GPS-like capabilites you could calculate the distance between a starship and a planet by giving the starship and planet name.
+- **Search for enemy starships within a range:** Using PostGIS GPS-like capabilites you could search for near by declared enemies of a given starship by giving the starship name.
+- **Board or disembark characters:** You could board or disembark a character from a starship by giving the character and starship name.
+- **Spawn random starship:** You could spawn a random starship in the universe.
+- **Declare enemy starship:** You could declare a starship to be enemy of another starship by giving their names.
+- Each planet and starship has its coordinates represented by the Geography type Point and it could accepts other other shapes in the future.
+- The tests are only available for the Starships service and resolver for now. 
 
-```bash
-# development
-$ npm run start
+### Database Schema
 
-# watch mode
-$ npm run start:dev
+#### Characters Table
 
-# production mode
-$ npm run start:prod
-```
+| Field                      | Type          | Modifiers             |
+|----------------------------|---------------|-----------------------|
+| name                       | VARCHAR       | PRIMARY KEY, UNIQUE   |
+| species                    | VARCHAR       |                       |
+| sensitivity_to_the_force   | VARCHAR       |                       |
+| currentLocationName        | VARCHAR       | NULLABLE              |
+| starshipName               | VARCHAR       | NULLABLE              |
 
-## Test
+#### Planets Table
 
-```bash
-# unit tests
-$ npm run test
+| Field                      | Type          | Modifiers             |
+|----------------------------|---------------|-----------------------|
+| name                       | VARCHAR       | PRIMARY KEY, UNIQUE   |
+| population                 | INT           |                       |
+| climate                    | VARCHAR       |                       |
+| terrain                    | VARCHAR       |                       |
+| location                   | GEOGRAPHY     | UNIQUE                |
 
-# e2e tests
-$ npm run test:e2e
+#### Starships Table
 
-# test coverage
-$ npm run test:cov
-```
+| Field                      | Type          | Modifiers             |
+|----------------------------|---------------|-----------------------|
+| name                       | VARCHAR       | PRIMARY KEY, UNIQUE   |
+| model                      | VARCHAR       |                       |
+| current_location           | GEOGRAPHY     | UNIQUE                |
+| cargo_capacity             | BIGINT        |                       |
 
-## Support
+#### Starships Enemies Table
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+| Field                      | Type          | Modifiers             |
+|----------------------------|---------------|-----------------------|
+| starshipName_1             | VARCHAR       | PRIMARY KEY           |
+| starshipName_2             | VARCHAR       | PRIMARY KEY           |
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Happy coding!
 
-## License
-
-Nest is [MIT licensed](LICENSE).
