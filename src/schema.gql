@@ -72,7 +72,7 @@ type PointType {
 }
 
 input PointTypeInput {
-  """Format is [lon, lat]"""
+  """Format is [lon, lat]. Must be unique"""
   coordinates: [Float!]!
 
   """Only supports "Point" value for now"""

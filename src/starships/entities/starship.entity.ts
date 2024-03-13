@@ -23,6 +23,7 @@ export class Starship {
     type: "geography",
     spatialFeatureType: "point",
     srid: 4326,
+    unique: true
   })
   @Field(_ => PointType)
   current_location: Point;

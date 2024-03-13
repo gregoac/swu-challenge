@@ -26,6 +26,7 @@ export class Planet {
     type: "geography",
     spatialFeatureType: "point",
     srid: 4326,
+    unique: true,
   })
   @Field(_ => PointType)
   location: Point
