@@ -11,8 +11,7 @@ export class PlanetsService {
   constructor(@InjectRepository(Planet) private planetRepository: Repository<Planet>){}
 
   async create(createPlanetInput: CreatePlanetInput): Promise<Planet> {
-    const newPlanet = this.planetRepository.create(createPlanetInput)
-    return this.planetRepository.save(newPlanet);
+    return this.planetRepository.save(createPlanetInput);
   }
 
   async findAll(): Promise<Planet[]> {

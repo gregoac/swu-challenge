@@ -47,7 +47,7 @@ type Mutation {
   createStarship(createStarshipInput: CreateStarshipInput!): Starship!
   declareStarshipEnemy(declareEnemyInput: DeclareEnemyInput!): Starship!
   disembarkingCharacter(disembarkingCharacterInput: BoardingOrDisembarkingCharacterInput!): Starship!
-  relocateCharacter(relocateCharacterInput: RelocateCharacterInput!): Character!
+  relocateCharacterToPlanet(relocateCharacterInput: RelocateCharacterInput!): Character!
   removeCharacter(name: String!): Character!
   removePlanet(name: String!): Planet!
   removeStarship(name: String!): Starship!

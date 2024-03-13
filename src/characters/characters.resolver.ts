@@ -41,7 +41,7 @@ export class CharactersResolver {
     return this.charactersService.remove(name);
   }
 
-  @Mutation(_ => Character)
+  @Mutation(_ => Character, {name: 'relocateCharacterToPlanet'})
   relocateCharacter(@Args('relocateCharacterInput') relocateCharacterInput: RelocateCharacterInput){
     return this.charactersService.relocateOrRemoveCharacterFromPlanet(relocateCharacterInput.name, relocateCharacterInput.targePlanet)
   }

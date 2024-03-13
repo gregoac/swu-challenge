@@ -16,8 +16,7 @@ export class CharactersService {
   ){}
 
   async create(createCharacterInput: CreateCharacterInput): Promise<Character> {
-    const newCharacter = this.characterRepository.create(createCharacterInput)
-    return this.characterRepository.save(newCharacter);
+    return this.characterRepository.save(createCharacterInput);
   }
 
   async findAll(): Promise<Character[]> {
