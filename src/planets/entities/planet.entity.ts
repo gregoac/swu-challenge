@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, Entity, PrimaryColumn, Point, Geography } from 'typeorm';
-import { PointType } from 'src/types';
+import { PointType } from '../../types';
 
 @Entity()
 @ObjectType()

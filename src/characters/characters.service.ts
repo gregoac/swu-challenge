@@ -4,7 +4,7 @@ import { UpdateCharacterInput } from './dto/update-character.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Character } from './entities/character.entity';
-import { PlanetsService } from 'src/planets/planets.service';
+import { PlanetsService } from '../planets/planets.service';
 
 @Injectable()
 export class CharactersService {
@@ -25,7 +25,7 @@ export class CharactersService {
   }
 
   async findOne(name: string): Promise<Character> {
-    const result = await this.characterRepository.findOneOrFail({
+    const result = await this.characterRepository.findOne({
       where: {
         name
       },

@@ -20,7 +20,7 @@ export class PlanetsService {
   }
 
   async findOne(name: string): Promise<Planet> {
-    return this.planetRepository.findOneOrFail({
+    return this.planetRepository.findOne({
       where: {
         name,
       }

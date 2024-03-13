@@ -4,9 +4,9 @@ import { UpdateStarshipInput } from './dto/update-starship.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Starship } from './entities/starship.entity';
 import { Point, Repository } from 'typeorm';
-import { CharactersService } from 'src/characters/characters.service';
-import { PlanetsService } from 'src/planets/planets.service';
-import { isConvertibleToNumber, findObjectByProperty, getRandomLongitudeAndLatitude } from 'src/utils';
+import { CharactersService } from '../characters/characters.service';
+import { PlanetsService } from '../planets/planets.service';
+import { isConvertibleToNumber, findObjectByProperty, getRandomLongitudeAndLatitude } from '../utils';
 
 @Injectable()
 export class StarshipsService {
@@ -19,8 +19,8 @@ export class StarshipsService {
   ){}
 
   async create(createStarshipInput: CreateStarshipInput): Promise<Starship> {
-    const newStarship = this.starshipRepository.create(createStarshipInput)
-    return this.starshipRepository.save(newStarship);
+    // const newStarship = this.starshipRepository.create(createStarshipInput)
+    return this.starshipRepository.save(createStarshipInput);
   }
 
   async findAll(): Promise<Starship[]> {
@@ -33,7 +33,7 @@ export class StarshipsService {
   }
 
   async findOne(name: string): Promise<Starship> {
-    return this.starshipRepository.findOneOrFail({
+    return this.starshipRepository.findOne({
       where: {
         name,
       },
@@ -51,7 +51,7 @@ export class StarshipsService {
 
   async remove(name: string): Promise<Starship> {
     const deleted = await this.findOne(name);
-    await this.starshipRepository.delete(name);
+    const result = await this.starshipRepository.delete(name);
     return deleted;
   }
 
@@ -91,7 +91,7 @@ export class StarshipsService {
 
   async searchForNearByEnemies(name: string): Promise<Starship[]>{
 
-    const starship = await this.starshipRepository.findOneOrFail({
+    const starship = await this.starshipRepository.findOne({
       where: {
         name
       },
@@ -122,7 +122,7 @@ export class StarshipsService {
     
   }
 
-  async spawnRandomEnemy(url: string = 'https://swapi.py4e.com/api/starships?page=4'){
+  async spawnRandomEnemy(url: string = 'https://swapi.py4e.com/api/starships'){
 
     const liveStarships: Starship[] = await this.findAll();
     const res = await fetch(`${url}`)
@@ -148,15 +148,15 @@ export class StarshipsService {
   }
 
   async declareEnemy(name: string, enemyName: string){
-    const starship = await this.starshipRepository.findOneOrFail({
+    const starship = await this.starshipRepository.findOne({
       where: {
         name
       },
       relations: {
-        enemies: true
+        enemies: true,
       }
     });
-    const enemyStarship = await this.starshipRepository.findOneOrFail({
+    const enemyStarship = await this.starshipRepository.findOne({
       where: {
         name: enemyName
       }

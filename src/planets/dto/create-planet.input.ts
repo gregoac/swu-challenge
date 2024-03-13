@@ -1,6 +1,6 @@
 import { InputType, Int, Float, Field } from '@nestjs/graphql';
 import { IsNotEmpty, MaxLength } from 'class-validator';
-import { PointTypeInput } from 'src/types';
+import { PointTypeInput } from '../../types';
 import { Point } from 'typeorm';
 
 @InputType()

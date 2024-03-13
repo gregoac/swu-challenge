@@ -3,8 +3,8 @@ import { StarshipsService } from './starships.service';
 import { StarshipsResolver } from './starships.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Starship } from './entities/starship.entity';
-import { CharactersModule } from 'src/characters/characters.module';
-import { PlanetsModule } from 'src/planets/planets.module';
+import { CharactersModule } from '../characters/characters.module';
+import { PlanetsModule } from '../planets/planets.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Starship]), CharactersModule, PlanetsModule],

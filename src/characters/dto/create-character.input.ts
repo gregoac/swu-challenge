@@ -13,5 +13,5 @@ export class CreateCharacterInput {
 
   @IsNotEmpty()
   @Field()
-  sensitivityToTheForce: string;
+  sensitivity_to_the_force: string;
 }
