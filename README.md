@@ -1,12 +1,12 @@
 # Project Overview
 
-This project is a NestJS based web application that simulates the Star Wars universe, providing CRUD operations for Characters, Planets and Starships among other functionalities using GraphQL transport layer. The project also uses PostgreSQL extension PostGIS for GPS-like capabilities.
+This project is a NestJS based web application that simulates the Star Wars universe, providing CRUD operations for Characters, Planets and Starships among other functionalities using GraphQL transport layer. The project also uses PostgreSQL extension PostGIS for GPS-like capabilities and features unit tests.
 
 ## Technical Stack
 
 - **Framework:** [NestJS](https://nestjs.com/)
 - **TypeScript Version:** 5.1.3
-- **ORM**: [`TypeORM`](https://typeorm.io/)
+- **ORM**: [TypeORM](https://typeorm.io/)
 - **Transport Layer**: [GraphQL](https://graphql.org/)
 - **Database System**: [PostgreSQL](https://www.postgresql.org/)
 
@@ -21,7 +21,7 @@ This project is a NestJS based web application that simulates the Star Wars univ
 
 ## Functionalities
 
-- **CRUD Operations:** Available for all entities.
+- **CRUD operations:** Available for all entities.
 - **Move characters and starships through planets:** You could relocate a character or a starship in a planet just giving the character or starship and planet name.
 - **Calculate distances:** Using PostGIS GPS-like capabilites you could calculate the distance between a starship and a planet just by giving the starship and planet name.
 - **Search for enemy starships within a range:** Using PostGIS GPS-like capabilites you could search for near by declared enemies of a given starship just by giving the starship name.
