@@ -24,7 +24,7 @@ This project is a NestJS based web application that simulates the Star Wars univ
 - **CRUD operations:** Available for all entities.
 - **Move characters and starships through planets:** You could relocate a character or a starship in a planet just giving the character or starship and planet name.
 - **Calculate distances:** Using PostGIS GPS-like capabilites you could calculate the distance between a starship and a planet by giving the starship and planet name.
-- **Search for enemy starships within a range:** Using PostGIS GPS-like capabilites you could search for near by declared enemies of a given starship by giving the starship name.
+- **Search for enemy starships within a range:** Using PostGIS GPS-like capabilites you could search for near by declared enemies of a starship by giving the starship name.
 - **Board or disembark characters:** You could board or disembark a character from a starship by giving the character and starship name.
 - **Spawn random starship:** You could spawn a random starship in the universe.
 - **Declare enemy starship:** You could declare a starship to be enemy of another starship by giving their names.
