@@ -336,7 +336,6 @@ describe('StarshipsService', () => {
       const distanceText = await service.calculateDistanceToPlanet(starship.name, planet.name);
       expect(planetRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: {name: planet.name}})
       expect(starshipRepositoryMock.findOneOrFail).toHaveBeenCalledWith({ where: {name: starship.name}, relations: {passengers: true, enemies: true}})
-      //expect(starshipRepositoryMock.query).toHaveBeenCalledWith("SELECT ST_Distance('SRID=4326;POINT(122 34)'::geography, 'SRID=4326;POINT(125 30)'::geography);")
       expect(distanceText).toMatch(`The distance between ${starship.name} starship and ${planet.name} planet is: ${(st_distance[0].st_distance / 1000).toFixed(2)} km`)
     })
   })
@@ -373,11 +372,6 @@ describe('StarshipsService', () => {
       starshipRepositoryMock.query.mockReturnValue(starshipsNearBy)
       const enemies = await service.searchForNearByEnemies(starship.name)
       expect(starshipRepositoryMock.findOneOrFail).toHaveBeenCalledWith({where: {name: starship.name}, relations: {enemies: true}})
-      // expect(starshipRepositoryMock.query).toHaveBeenCalledWith(
-      //   `SELECT "name"
-      //   FROM starship
-      //   WHERE ST_DWithin("current_location", 'POINT(122 34)', 10000000.0)`
-      // )
       expect(enemies).toMatchObject(starship.enemies)
     })
   })
