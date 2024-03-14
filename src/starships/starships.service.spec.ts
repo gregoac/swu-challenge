@@ -156,7 +156,6 @@ describe('StarshipsService', () => {
 
       starshipRepositoryMock.update.mockReturnValue({ generatedMaps: [], raw: [], affected: 1 });
       const resultUpdateStarship = await service.update(starship.name, starship)
-      // Assert
       expect(resultUpdateStarship).toMatchObject(starship)
       expect(starshipRepositoryMock.update).toHaveBeenCalledWith(starship.name, starship);
 
@@ -179,7 +178,6 @@ describe('StarshipsService', () => {
 
       starshipRepositoryMock.delete.mockReturnValue({ raw: [], affected: 1 });
 
-      //act
       const result = await service.remove(starship.name);
 
       expect(result).toEqual(starship);
