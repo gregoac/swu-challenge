@@ -12,12 +12,13 @@ This project is a NestJS based web application that simulates the Star Wars univ
 
 ## Setup
 
-1. Create a database in PostgreSQL and enable the PostGIS extension in it.
-2. After pulling the project, run `npm install` to install necessary dependencies.
-3. Make a copy of `.env.example` as `.env` and place your environmental variables that will set your database and port configuration. 
-4. Run `npm run start` to start the project.
-5. Go to the page `/graphql` to access the query interface.
-6. Run `npm run test` to run the unit tests.
+1. Install PostgreSQL and the PostGIS extension. You can do it following these instructions: https://postgis.net/workshops/postgis-intro/installation.html.
+2. Create a spatial database. You can do it following these instructions: https://postgis.net/workshops/postgis-intro/creating_db.html.
+3. After pulling the project, run `npm install` to install necessary dependencies.
+4. Make a copy of `.env.example` as `.env` and place your environmental variables that will set your database and port configuration. 
+5. Run `npm run start` to start the project.
+6. Go to the page `/graphql` to access the query interface.
+7. Run `npm run test` to run the unit tests.
 
 ## Functionalities
 
