@@ -28,7 +28,7 @@ This project is a NestJS based web application that simulates the Star Wars univ
 - **Board or disembark characters:** You could board or disembark a character from a starship by giving the character and starship name.
 - **Spawn random starship:** You could spawn a random starship in the universe.
 - **Declare enemy starship:** You could declare a starship to be enemy of another starship by giving their names.
-- Each planet and starship has its coordinates represented by the Geography type Point and it could accepts other other shapes in the future.
+- Each planet and starship has its coordinates represented by the Geography type Point and it could accept other other shapes in the future.
 - The tests are only available for the Starships service and resolver for now. 
 
 ### Database Schema
